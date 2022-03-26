@@ -119,44 +119,44 @@ int rgb_from_color(int color, int rgb_buffer[]) {
 			rgb_buffer[2] = 0;
 			return 0;
 		case 2:
-			rgb_buffer[0] = 255;
-			rgb_buffer[1] = 255;
-			rgb_buffer[2] = 255;
+			rgb_buffer[0] = 0;
+			rgb_buffer[1] = 17;
+			rgb_buffer[2] = 77;
 			return 0;
 		case 3:
-			rgb_buffer[0] = 255;
-			rgb_buffer[1] = 0;
-			rgb_buffer[2] = 0;
+			rgb_buffer[0] = 0;
+			rgb_buffer[1] = 33;
+			rgb_buffer[2] = 153;
 			return 0;
 		case 4:
-			rgb_buffer[0] = 255;
-			rgb_buffer[1] = 165;
-			rgb_buffer[2] = 0;
+			rgb_buffer[0] = 0;
+			rgb_buffer[1] = 50;
+			rgb_buffer[2] = 230;
 			return 0;
 		case 5:
-			rgb_buffer[0] = 255;
-			rgb_buffer[1] = 255;
-			rgb_buffer[2] = 0;
+			rgb_buffer[0] = 51;
+			rgb_buffer[1] = 95;
+			rgb_buffer[2] = 255;
 			return 0;
 		case 6:
-			rgb_buffer[0] = 0;
-			rgb_buffer[1] = 255;
-			rgb_buffer[2] = 0;
+			rgb_buffer[0] = 51;
+			rgb_buffer[1] = 160;
+			rgb_buffer[2] = 255;
 			return 0;
 		case 7:
-			rgb_buffer[0] = 0;
-			rgb_buffer[1] = 0;
+			rgb_buffer[0] = 51;
+			rgb_buffer[1] = 210;
 			rgb_buffer[2] = 255;
 			return 0;
 		case 8:
-			rgb_buffer[0] = 160;
-			rgb_buffer[1] = 32;
-			rgb_buffer[2] = 240;
+			rgb_buffer[0] = 51;
+			rgb_buffer[1] = 255;
+			rgb_buffer[2] = 255;
 			return 0;
 		case 9:
-			rgb_buffer[0] = 255;
-			rgb_buffer[1] = 68;
-			rgb_buffer[2] = 204;
+			rgb_buffer[0] = 51;
+			rgb_buffer[1] = 255;
+			rgb_buffer[2] = 153;
 			return 0;
 		default:
 			return 1;
