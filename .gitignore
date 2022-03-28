@@ -1,4 +1,6 @@
 /out
+/cfgs
 /langtons-ant.o
+/langtons-ant.out
 /langtons-ant.exe
 /SDL2
