@@ -89,6 +89,8 @@ void draw_grid(SDL_Renderer* renderer) {
 	}
 }
 
+/* ------------------------------------------------------------------------------- */
+
 void start_ant() {
 	// Start at the center of the screen, facing up
 	ANTS_ARRAY[0].yp = WINDOW_H/CELL_SIZE / 2;
@@ -100,6 +102,27 @@ void start_ant() {
 		ANTS_ARRAY[n].xp = -1; 
 		ANTS_ARRAY[n].rotation = -1;
 	}
+}
+
+int spawn_ant(int yp, int xp) {
+	for (int n = 0; n < MAX_ANT_NUMBER; n++) {
+		if ( ANTS_ARRAY[n].yp == yp || ANTS_ARRAY[n].xp == xp ) return 1;
+		if ( ANTS_ARRAY[n].yp == -1 || ANTS_ARRAY[n].xp == -1 ) {
+			ANTS_ARRAY[n].yp = yp;
+			ANTS_ARRAY[n].xp = xp;
+			ANTS_ARRAY[n].rotation = UP;
+			break;
+		}
+	}
+	return 0;
+}
+
+// Go back to the default dead state (All values -1)
+int kill_ant(int n) {
+	ANTS_ARRAY[n].yp = -1;
+	ANTS_ARRAY[n].xp = -1;
+	ANTS_ARRAY[n].rotation = -1;
+	return 0;
 }
 
 /* ------------------------------------------------------------------------------- */
@@ -124,19 +147,19 @@ int move_ant(int* cell_array, int x_size, int ant_i) {
 
 	// Change the color of the current cell based on the previous one
 	if (current_color == BACKGROUND) {
-		cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] = COLORS_ARRAY[1];
+		cell_array[ANTS_ARRAY[ant_i].xp * x_size + ANTS_ARRAY[ant_i].yp] = COLORS_ARRAY[1];
 	} else {
 		if (color_in_array+1 >= COLOR_NUMBER) {
-			cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] = COLORS_ARRAY[0];
+			cell_array[ANTS_ARRAY[ant_i].xp * x_size + ANTS_ARRAY[ant_i].yp] = COLORS_ARRAY[0];
 		} else {
-			cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] = COLORS_ARRAY[color_in_array+1];
+			cell_array[ANTS_ARRAY[ant_i].xp * x_size + ANTS_ARRAY[ant_i].yp] = COLORS_ARRAY[color_in_array+1];
 		}
 	}
 
 	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
 	// which is specified in the config.cfg.
 	ANTS_ARRAY[ant_i].rotation = rotate(ROTATIONS_ARRAY[color_in_array], ANTS_ARRAY[ant_i].rotation);
-
+	
 	// Move forward once
 	move_forward(ant_i);
 

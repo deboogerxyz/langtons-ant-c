@@ -11,6 +11,8 @@
 #include "read_config.h"	// For config.cfg
 #include "ant.h"
 
+#define CONSOLE_WIDTH 100
+
 int main(int argc, char* argv[]) {
 	
 	// Read config file
@@ -69,11 +71,12 @@ int main(int argc, char* argv[]) {
 
 	// Main loop
 	int running = 1, grid_active = 0;
-	int space_pressed = 0, r_arrow_pressed = 0;
+	int space_pressed = 0, r_arrow_pressed = 0, mouse_y = 0, mouse_x = 0;
 	int number_of_steps = 0;
 	int rgb_buffer[3] = {0,0,0};
 
-	SDL_Rect current_cell;
+	SDL_Rect current_cell;  // Will change every cell
+	SDL_Rect ant_rect;      // For drawing the ant
 
 	SDL_Event sdl_event;	// Create an event for the keys and shit
 	while (running == 1) {
@@ -82,9 +85,7 @@ int main(int argc, char* argv[]) {
 		// Events
 		while (SDL_PollEvent(&sdl_event)) {
 			switch (sdl_event.type) {
-				case SDL_QUIT:
-					running = 0;
-					break;
+				case SDL_QUIT:		running = 0;	break;
 				case SDL_KEYDOWN:
 					switch (sdl_event.key.keysym.scancode) {	// Check the pressed key
 						case SDL_SCANCODE_ESCAPE:	running = 0;					break;
@@ -94,8 +95,26 @@ int main(int argc, char* argv[]) {
 						default:					break;
 					}
 					break;
-				default:
+				case SDL_MOUSEBUTTONDOWN:
+					switch (sdl_event.button.button) {
+						case SDL_BUTTON_LEFT:
+							mouse_y = sdl_event.motion.y;
+							mouse_x = sdl_event.motion.x;
+							break;
+						default:					break;
+					}
 					break;
+				case SDL_MOUSEBUTTONUP:
+					switch (sdl_event.button.button) {
+						case SDL_BUTTON_LEFT:
+							if (spawn_ant(mouse_y, mouse_x) || DEBUG_PRINT > 1) {
+								printf("Could not spawn ant..."); 
+							}
+							break;
+						default:					break;
+					}
+					break;
+				default:							break;
 			}
 		}
 
@@ -116,6 +135,9 @@ int main(int argc, char* argv[]) {
 			// Show the number of steps in the terminal
 			if (DEBUG_PRINT == 1 || DEBUG_PRINT == 2) {
 				number_of_steps++;
+                for (int n = 0; n < CONSOLE_WIDTH; n++) {
+                    printf(" ");    // For clearing excess stuff
+                }
 				printf("\rSteps: %d ", number_of_steps);
 				if (DEBUG_PRINT == 2) { 
 					for (int n = 0; n < MAX_ANT_NUMBER; n++) {
@@ -152,11 +174,11 @@ int main(int argc, char* argv[]) {
 		for (int n = 0; n < MAX_ANT_NUMBER; n++) {
 			if (ANTS_ARRAY[n].yp >= 0 && ANTS_ARRAY[n].xp >= 0) {
 				SDL_SetRenderDrawColor(sdl_renderer, 150, 0, 0, 255);
-				current_cell.x = ANTS_ARRAY[n].xp * CELL_SIZE + 1;
-				current_cell.y = ANTS_ARRAY[n].yp * CELL_SIZE + 1;
-				current_cell.w = CELL_SIZE - 2;
-				current_cell.h = CELL_SIZE - 2;
-				SDL_RenderFillRect(sdl_renderer, &current_cell);
+				ant_rect.x = ANTS_ARRAY[n].xp * CELL_SIZE + 1;
+				ant_rect.y = ANTS_ARRAY[n].yp * CELL_SIZE + 1;
+				ant_rect.w = CELL_SIZE - 2;
+				ant_rect.h = CELL_SIZE - 2;
+				SDL_RenderFillRect(sdl_renderer, &ant_rect);
 			}
 		}
 
